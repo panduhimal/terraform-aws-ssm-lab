@@ -8,22 +8,26 @@ Practice configuring SSM Session Manager access to EC2 instances without relying
 
 ## Status
 
-| Component                    | Status         |
-| ---------------------------- | -------------- |
-| Public subnet instance + SSM | ✅ Done        |
-| Private subnet + SSM         | 🚧 In progress |
+| Component                            | Status         |
+| ------------------------------------ | -------------- |
+| Public subnet instance + SSM         | ✅ Done        |
+| Private subnet + SSM (NAT Gateway)   | ✅ Done        |
+| Private subnet + SSM (VPC Endpoints) | 🚧 In progress |
 
 ## What's done: public instance SSM access
 
 - EC2 instance launched in the default VPC's public subnet, with an IAM role/instance profile attached (`AmazonSSMManagedInstanceCore`)
 - Security group scoped to outbound `443` only — SSM Session Manager and the SSM Agent only need HTTPS to the `ssm`, `ssmmessages`, and `ec2messages` endpoints; no inbound rules are needed for SSM to work
 
-## What's left: private instance SSM access
+## What's done: private instance via NAT Gateway
 
-The default VPC only ships with public subnets, so this part requires creating a custom private subnet by hand. Once that's in place, the private instance still needs a way to reach the SSM/ssmmessages/ec2messages endpoints without a route to the internet — the two options to try:
+- EC2 instance launched in a custom private subnet, with an IAM role/instance profile attached (`AmazonSSMManagedInstanceCore`)
+- Route table configured to point `0.0.0.0/0` outbound traffic to a newly provisioned NAT Gateway and Elastic IP in the public subnet
+- Security group scoped to outbound `443` only to reach the public SSM endpoints.
 
-- **VPC interface endpoints** (PrivateLink) for `ssm`, `ssmmessages`, and `ec2messages`, each with its own security group allowing 443 inbound from the private instance's SG
-- **NAT gateway** in the public subnet, routed from the private subnet's route table, so the instance can reach the public SSM endpoints the same way the public instance does
+## What's left: private instance via VPC Endpoints
+
+- Configure a separate private EC2 instance that connects to SSM securely over the internal AWS network using VPC interface endpoints (`ssm`, `ssmmessages`, and `ec2messages`) without needing any internet access.
 
 ## Notes
 
