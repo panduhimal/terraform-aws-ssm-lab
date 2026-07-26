@@ -30,13 +30,13 @@ variable "private_subnet_cidr" {
   }
 }
 
-variable "private_endpoint_subnet_cidr" {
-  description = "The CIDR block of the Private Endpoint Subnet."
-  type        = string
-  default     = "172.31.64.0/20"
+# variable "private_endpoint_subnet_cidr" {
+#   description = "The CIDR block of the Private Endpoint Subnet."
+#   type        = string
+#   default     = "172.31.64.0/20"
 
-  validation {
-    condition     = can(cidrhost(var.private_endpoint_subnet_cidr, 0))
-    error_message = "The CIDR range must be a valid IPv4 CIDR block (e.g., 10.0.0.0/24)."
-  }
-}
+#   validation {
+#     condition     = can(cidrhost(var.private_endpoint_subnet_cidr, 0))
+#     error_message = "The CIDR range must be a valid IPv4 CIDR block (e.g., 10.0.0.0/24)."
+#   }
+# }

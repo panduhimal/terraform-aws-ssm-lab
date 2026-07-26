@@ -38,26 +38,26 @@ resource "aws_route" "private_internet_route" {
 }
 
 
-resource "aws_subnet" "private_endpoint_subnet" {
-  vpc_id                  = data.aws_vpc.default.id
-  cidr_block              = var.private_endpoint_subnet_cidr
-  availability_zone       = data.aws_subnet.public_metadata.availability_zone
-  map_public_ip_on_launch = false
+# resource "aws_subnet" "private_endpoint_subnet" {
+#   vpc_id                  = data.aws_vpc.default.id
+#   cidr_block              = var.private_endpoint_subnet_cidr
+#   availability_zone       = data.aws_subnet.public_metadata.availability_zone
+#   map_public_ip_on_launch = false
 
-  tags = {
-    Name = "private-endpoint-subnet"
-  }
-}
+#   tags = {
+#     Name = "private-endpoint-subnet"
+#   }
+# }
 
-resource "aws_route_table" "private_endpoint_rt" {
-  vpc_id = data.aws_vpc.default.id
+# resource "aws_route_table" "private_endpoint_rt" {
+#   vpc_id = data.aws_vpc.default.id
 
-  tags = {
-    Name = "private-endpoint-rt"
-  }
-}
+#   tags = {
+#     Name = "private-endpoint-rt"
+#   }
+# }
 
-resource "aws_route_table_association" "private_endpoint_rt_association" {
-  subnet_id      = aws_subnet.private_endpoint_subnet.id
-  route_table_id = aws_route_table.private_endpoint_rt.id
-}
+# resource "aws_route_table_association" "private_endpoint_rt_association" {
+#   subnet_id      = aws_subnet.private_endpoint_subnet.id
+#   route_table_id = aws_route_table.private_endpoint_rt.id
+# }

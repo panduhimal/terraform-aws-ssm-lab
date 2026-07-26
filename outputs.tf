@@ -18,10 +18,10 @@ output "private_instance_id" {
   value       = aws_instance.private_instance.id
 }
 
-output "private_endpoint_instance_id" {
-  description = "The ID of private EC2 instance for VPC Endpoints."
-  value       = aws_instance.private_endpoint_instance.id
-}
+# output "private_endpoint_instance_id" {
+#   description = "The ID of private EC2 instance for VPC Endpoints."
+#   value       = aws_instance.private_endpoint_instance.id
+# }
 
 output "ssm_check_command" {
   description = "AWS CLI command to verify if the SSM Agent has checked in and is Online."
@@ -43,12 +43,12 @@ output "private_ssm_connect_command" {
   value       = "aws ssm start-session --target ${aws_instance.private_instance.id}"
 }
 
-output "private_endpoint_ssm_check_command" {
-  description = "AWS CLI command to verify if the VPC-endpoint private instance's SSM Agent has checked in and is Online."
-  value       = "aws ssm describe-instance-information --query \"InstanceInformationList[?InstanceId=='${aws_instance.private_endpoint_instance.id}'].{ID:InstanceId,Status:PingStatus}\" --output table"
-}
+# output "private_endpoint_ssm_check_command" {
+#   description = "AWS CLI command to verify if the VPC-endpoint private instance's SSM Agent has checked in and is Online."
+#   value       = "aws ssm describe-instance-information --query \"InstanceInformationList[?InstanceId=='${aws_instance.private_endpoint_instance.id}'].{ID:InstanceId,Status:PingStatus}\" --output table"
+# }
 
-output "private_endpoint_ssm_connect_command" {
-  description = "AWS CLI command to immediately drop into a secure interactive Session Manager shell on the VPC-endpoint private instance."
-  value       = "aws ssm start-session --target ${aws_instance.private_endpoint_instance.id}"
-}
+# output "private_endpoint_ssm_connect_command" {
+#   description = "AWS CLI command to immediately drop into a secure interactive Session Manager shell on the VPC-endpoint private instance."
+#   value       = "aws ssm start-session --target ${aws_instance.private_endpoint_instance.id}"
+# }
