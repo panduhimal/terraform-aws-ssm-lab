@@ -29,7 +29,6 @@ resource "aws_eip" "nat_eip" {
 resource "aws_nat_gateway" "ngw" {
   allocation_id = aws_eip.nat_eip.id
   subnet_id     = local.target_public_subnet_id
-  depends_on    = [data.aws_subnet.public_metadata]
 }
 
 resource "aws_route" "private_internet_route" {
