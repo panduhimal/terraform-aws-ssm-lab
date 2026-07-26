@@ -23,3 +23,16 @@ resource "aws_security_group" "private_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+resource "aws_security_group" "private_endpoint_instance_sg" {
+  name        = "ssm-private-endpoint-instance-sg"
+  description = "Private subnet instance reaching SSM via VPC Endpoints"
+  vpc_id      = data.aws_vpc.default.id
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
