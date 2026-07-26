@@ -8,11 +8,11 @@ Practice configuring SSM Session Manager access to EC2 instances without relying
 
 ## Status
 
-| Component                            | Status         |
-| ------------------------------------ | -------------- |
-| Public subnet instance + SSM         | ✅ Done        |
-| Private subnet + SSM (NAT Gateway)   | ✅ Done        |
-| Private subnet + SSM (VPC Endpoints) | 🚧 In progress |
+| Component                            | Status                  |
+| ------------------------------------ | ----------------------- |
+| Public subnet instance + SSM         | ✅ Done                 |
+| Private subnet + SSM (NAT Gateway)   | ✅ Done                 |
+| Private subnet + SSM (VPC Endpoints) | ⏸️ Deferred (see below) |
 
 ## What's done: public instance SSM access
 
@@ -25,9 +25,13 @@ Practice configuring SSM Session Manager access to EC2 instances without relying
 - Route table configured to point `0.0.0.0/0` outbound traffic to a newly provisioned NAT Gateway and Elastic IP in the public subnet
 - Security group scoped to outbound `443` only to reach the public SSM endpoints.
 
-## What's left: private instance via VPC Endpoints
+## Deferred: private instance via VPC Endpoints
 
-- Configure a separate private EC2 instance that connects to SSM securely over the internal AWS network using VPC interface endpoints (`ssm`, `ssmmessages`, and `ec2messages`) without needing any internet access.
+VPC interface endpoints for `ssm`, `ssmmessages`, and `ec2messages` were built and briefly working, but caused a conflict with the other two scenarios sharing the same default VPC:
+
+Enabling `private_dns_enabled` on the endpoints creates a **VPC-wide** private hosted zone for those service hostnames — not scoped to the endpoint's subnet. This meant the NAT-based private instance also started resolving SSM's hostnames to the endpoints' private IPs instead of the real public IPs, and got silently blocked by the endpoint's security group (which only allowed traffic from the endpoint-scenario instance's SG). Result: the NAT scenario broke (`TargetNotConnected` on session start) the moment the endpoint scenario was added.
+
+This configuration has been removed from this lab and will be revisited as its own separate lab, most likely in its own dedicated VPC to avoid the DNS crosstalk entirely.
 
 ## Notes
 
