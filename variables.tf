@@ -36,7 +36,7 @@ variable "private_endpoint_subnet_cidr" {
   default     = "172.31.64.0/20"
 
   validation {
-    condition     = can(cidrhost(var.private_subnet_cidr, 0))
+    condition     = can(cidrhost(var.private_endpoint_subnet_cidr, 0))
     error_message = "The CIDR range must be a valid IPv4 CIDR block (e.g., 10.0.0.0/24)."
   }
 }
