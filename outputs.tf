@@ -14,7 +14,7 @@ output "vpc_id" {
 }
 
 output "private_instance_id" {
-  description = "The ID of public EC2 instance."
+  description = "The ID of private EC2 instance."
   value       = aws_instance.private_instance.id
 }
 
