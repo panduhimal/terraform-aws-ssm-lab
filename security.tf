@@ -36,3 +36,16 @@ resource "aws_security_group" "private_endpoint_instance_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+resource "aws_security_group" "ssm_endpoint_sg" {
+  name        = "ssm-endpoint-sg"
+  description = "VPC interface endpoints for SSM, accepting HTTPS only."
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.private_endpoint_instance_sg.id]
+  }
+}
