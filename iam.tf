@@ -24,3 +24,4 @@ resource "aws_iam_instance_profile" "ssm_profile" {
   name = "ec2-ssm-public-profile"
   role = aws_iam_role.ssm_role.name
 }
+
