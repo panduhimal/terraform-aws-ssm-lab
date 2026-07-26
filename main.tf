@@ -1,7 +1,7 @@
 resource "aws_instance" "public_instance" {
   ami                         = data.aws_ami.linux.id
   instance_type               = "t2.micro"
-  subnet_id                   = sort(data.aws_subnets.default.ids)[0]
+  subnet_id                   = local.target_public_subnet_id
   vpc_security_group_ids      = [aws_security_group.public_sg.id]
   iam_instance_profile        = aws_iam_instance_profile.ssm_profile.name
   associate_public_ip_address = true
