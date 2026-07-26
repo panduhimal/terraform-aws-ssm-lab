@@ -23,3 +23,11 @@ data "aws_ami" "linux" {
     values = ["hvm"]
   }
 }
+
+locals {
+  target_public_subnet_id = sort(data.aws_subnets.default.ids)[0]
+}
+
+data "aws_subnet" "public_metadata" {
+  id = local.target_public_subnet_id
+}
